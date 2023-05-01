@@ -1,0 +1,23 @@
+﻿  main.cpp
+C:\Users\simon\source\repos\CasseBriquetest\main.cpp(38,67): warning C4244: 'argument' : conversion de 'T' en 'T', perte possible de données
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\simon\source\repos\CasseBriquetest\main.cpp(38,47): warning C4244: 'argument' : conversion de 'T' en 'T', perte possible de données
+          with
+          [
+              T=unsigned int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\simon\source\repos\CasseBriquetest\main.cpp(69,70): warning C4244: 'argument' : conversion de 'double' en 'sf::Uint8', perte possible de données
+C:\Users\simon\source\repos\CasseBriquetest\main.cpp(69,54): warning C4244: 'argument' : conversion de 'double' en 'sf::Uint8', perte possible de données
+C:\Users\simon\source\repos\CasseBriquetest\main.cpp(69,37): warning C4244: 'argument' : conversion de 'double' en 'sf::Uint8', perte possible de données
+  TemplateSFML.vcxproj -> C:\Users\simon\source\repos\CasseBriquetest\x64\Debug\TemplateSFML.exe
