@@ -19,23 +19,21 @@ Player::~Player()
 
 void Player::draw(sf::RenderWindow& window)
 {
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-	{
-		position.x = sf::Mouse::getPosition(window).x - size.x / 2;
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
+        // Get the current mouse position
+        sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
 
-		if (position.x < 0)
-		{
-			position.x = 0;
-		}
-		if (position.x + size.x > window.getSize().x)
-		{
-			position.x = window.getSize().x - size.x;
-		}
-	}
+        // Calculate the new position of the player
+        float newX = mousePosition.x - (size.x / 2); // center the player on the mouse position
+        newX = std::max(newX, 0.0f); // keep the player inside the left border of the window
+        newX = std::min(newX, window.getSize().x - size.x); // keep the player inside the right border of the window
+        position.x = newX;
+    }
 
-	shape.setPosition(position);
-
-	window.draw(shape);
+    // Set the player shape's position and draw it
+    shape.setPosition(position);
+    window.draw(shape);
 }
 
 sf::RectangleShape Player::getShape()

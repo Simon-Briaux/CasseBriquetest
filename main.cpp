@@ -30,7 +30,7 @@ int main(int argc, char** argv)
         }
     }
 
-    Ball ball(200, 250, 10, 200);
+    Ball ball(200, 250, 10, 400);
     Player player(550, 100, 10);
     sf::RenderWindow window(sf::VideoMode(800, 600), "Casse Brique");
 
@@ -55,6 +55,7 @@ int main(int argc, char** argv)
 
         ball.move(ellapsedTime);
         ball.manageCollisionWith(window);
+        ball.manageCollisionWith(player);
 
         window.clear();
 
