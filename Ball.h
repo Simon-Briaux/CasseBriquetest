@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Player.h"
+#include "brick.h"
 
 class Ball
 {
@@ -12,6 +13,8 @@ private:
 	float speed;
 	int radius;
 	sf::Vector2f direction;
+	int lives;
+
 	static bool isRandInitialized;
 	double randomizeAngle();
 	void setAngle(double angle);
@@ -27,4 +30,5 @@ public:
 	void setDirection(sf::Vector2f newDirection);
 	void manageCollisionWith(sf::RenderWindow& window);
 	void manageCollisionWith(Player& player);
+	void manageCollisionWith(Brick* brick);
 };

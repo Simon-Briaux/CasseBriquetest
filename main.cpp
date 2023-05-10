@@ -14,25 +14,24 @@ double mapValue(double value, double min, double max, double nMin, double nMax)
 
 int main(int argc, char** argv)
 {
-    const int NUM_ROWS = 5;
-    const int NUM_COLS = 10;
+    std::deque<Brick*> bricks;
+
+    // Ajout des briques
     const int BRICK_WIDTH = 50;
     const int BRICK_HEIGHT = 20;
-    const int BRICK_MARGIN = 5;
-
-    std::deque<Brick*> bricks;
-    for (int i = 0; i < NUM_ROWS; i++) {
-        for (int j = 0; j < NUM_COLS; j++) {
-            int x = j * (BRICK_WIDTH + BRICK_MARGIN);
-            int y = i * (BRICK_HEIGHT + BRICK_MARGIN);
-            Brick* brick = new Brick(x, y, BRICK_WIDTH, BRICK_HEIGHT, 3);
-            bricks.push_back(brick);
+    const int BRICK_MARGIN = 10;
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 15; j++) {
+            int x = j * (BRICK_WIDTH + BRICK_MARGIN) + BRICK_MARGIN;
+            int y = i * (BRICK_HEIGHT + BRICK_MARGIN) + BRICK_MARGIN;
+            bricks.push_back(new Brick(x, y, BRICK_WIDTH, BRICK_HEIGHT, 2));
         }
     }
 
     Ball ball(200, 250, 10, 400);
     Player player(550, 100, 10);
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Casse Brique");
+    Brick brick(25, 50, 50, 20, 2);
+    sf::RenderWindow window(sf::VideoMode(908, 600), "Casse Brique");
 
     sf::RectangleShape rdr2;
     rdr2.setSize(sf::Vector2f(window.getSize().x, window.getSize().y));
@@ -56,6 +55,18 @@ int main(int argc, char** argv)
         ball.move(ellapsedTime);
         ball.manageCollisionWith(window);
         ball.manageCollisionWith(player);
+        for (int i = 0; i < bricks.size(); i++)
+        {
+            if (bricks[i]->isAlive())
+            {
+                bricks[i]->draw(window);
+                ball.manageCollisionWith(bricks[i]);
+            }
+            else
+            {
+                bricks[i]->destroyAndDelete(bricks);
+            }
+        }
 
         window.clear();
 
@@ -73,6 +84,9 @@ int main(int argc, char** argv)
         window.draw(rdr2);
         player.draw(window);
         ball.draw(window);
+        for (auto& brick : bricks) {
+            brick->draw(window);
+        }
         window.display();
     }
 
