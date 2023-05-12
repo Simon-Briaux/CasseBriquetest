@@ -1,4 +1,11 @@
 #include "Ball.h"
+#include <cmath>
+
+const double PI = std::acos(-1); // alternative à M_PI
+
+double radius = 10.0;
+double circumference = 2.0 * PI * radius;
+
 
 bool Ball::isRandInitialized = false;
 
@@ -46,6 +53,7 @@ void Ball::draw(sf::RenderWindow& window)
 	shape.setPosition(position);
 	window.draw(shape);
 }
+
 
 float Ball::getSpeed()
 {
@@ -98,26 +106,28 @@ void Ball::manageCollisionWith(sf::RenderWindow& window)
 void Ball::manageCollisionWith(Player& player)
 {
 	// Vérifier s'il y a collision entre la balle et la plateforme
-	if (position.x + radius >= player.getPosition().x && position.x - radius <= player.getPosition().x + player.getSize().x && position.y + radius >= player.getPosition().y && position.y - radius < player.getPosition().y + player.getSize().y)
+	if (position.x + radius >= player.getPosition().x && position.x - radius <= player.getPosition().x + player.getSize().x && position.y + radius >= player.getPosition().y && position.y - radius <= player.getPosition().y + player.getSize().y)
 	{
+		double paddleCenter = player.getPosition().x + player.getSize().x / 2.0;
+		double collisionOffset = position.x - paddleCenter;
+		double maxOffset = player.getSize().x / 2.0 + radius;
+		double normalizedOffset = collisionOffset / maxOffset;
+		double angle = normalizedOffset * (5 * PI / 12.0);
+
 		if (direction.y > 0)
 		{
-			position.y = player.getPosition().y - radius - 1;
+			// La balle est en collision avec le haut de la plateforme
+			position.y = player.getPosition().y - radius;
 		}
 		else
 		{
-			position.y = player.getPosition().y + player.getSize().y + radius + 1;
+			// La balle est en collision avec le bas de la plateforme
+			position.y = player.getPosition().y + player.getSize().y + radius;
 		}
 		direction.y *= -1;
 
-		// Calculer l'angle de rebond en fonction de la position de la collision sur la plateforme
-		double angle = ((position.x - player.getPosition().x) / player.getSize().x) * (5 * 30 / 12) - (5 * 30 / 12) / 2;
-
 		// Changer la direction de la balle en fonction de l'angle de rebond
 		setAngle(angle);
-
-		// Replace la balle sur la plateforme
-		position.y = player.getPosition().y - radius;
 
 		// Met à jour la position précédente de la balle pour éviter qu'elle traverse la plateforme à la prochaine itération
 		oldPosition = position;
@@ -178,3 +188,4 @@ void Ball::manageCollisionWith(Brick* brick)
 		}
 	}
 }
+

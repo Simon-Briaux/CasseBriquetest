@@ -14,7 +14,6 @@ private:
 	int radius;
 	sf::Vector2f direction;
 	int lives;
-
 	static bool isRandInitialized;
 	double randomizeAngle();
 	void setAngle(double angle);

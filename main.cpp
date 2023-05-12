@@ -20,7 +20,7 @@ int main(int argc, char** argv)
     const int BRICK_WIDTH = 50;
     const int BRICK_HEIGHT = 20;
     const int BRICK_MARGIN = 10;
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 5; i++) {
         for (int j = 0; j < 15; j++) {
             int x = j * (BRICK_WIDTH + BRICK_MARGIN) + BRICK_MARGIN;
             int y = i * (BRICK_HEIGHT + BRICK_MARGIN) + BRICK_MARGIN;
@@ -28,7 +28,7 @@ int main(int argc, char** argv)
         }
     }
 
-    Ball ball(200, 250, 10, 400);
+    Ball ball(400, 200, 10, 400);
     Player player(550, 100, 10);
     Brick brick(25, 50, 50, 20, 2);
     sf::RenderWindow window(sf::VideoMode(908, 600), "Casse Brique");
@@ -40,55 +40,62 @@ int main(int argc, char** argv)
     float ellapsedTime = 0;
 
     // on fait tourner le programme jusqu'à ce que la fenêtre soit fermée
-    while (window.isOpen())
+   while (window.isOpen())
+{
+    ellapsedTime = clock.restart().asSeconds();
+    // on inspecte tous les évènements de la fenêtre qui ont été émis depuis la précédente itération
+    sf::Event event;
+    while (window.pollEvent(event))
     {
-        ellapsedTime = clock.restart().asSeconds();
-        // on inspecte tous les évènements de la fenêtre qui ont été émis depuis la précédente itération
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            // évènement "fermeture demandée" : on ferme la fenêtre
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
-
-        ball.move(ellapsedTime);
-        ball.manageCollisionWith(window);
-        ball.manageCollisionWith(player);
-        for (int i = 0; i < bricks.size(); i++)
-        {
-            if (bricks[i]->isAlive())
-            {
-                bricks[i]->draw(window);
-                ball.manageCollisionWith(bricks[i]);
-            }
-            else
-            {
-                bricks[i]->destroyAndDelete(bricks);
-            }
-        }
-
-        window.clear();
-
-        // Dessin des briques
-        for (int i = 0; i < bricks.size(); i++) {
-            bricks[i]->draw(window);
-        }
-
-        double mappedValue = mapValue(ball.getPosition().x, 0, window.getSize().x, 0, 255);
-        double mappedValue2 = mapValue(ball.getPosition().y, 0, window.getSize().y, 0, 255);
-        double mappedValue3 = (mappedValue + mappedValue2) / 2.0;
-        rdr2.setFillColor(sf::Color(mappedValue, 255 - mappedValue2, mappedValue3));
-
-        rdr2.setPosition(0, 0);
-        window.draw(rdr2);
-        player.draw(window);
-        ball.draw(window);
-        for (auto& brick : bricks) {
-            brick->draw(window);
-        }
-        window.display();
+        // évènement "fermeture demandée" : on ferme la fenêtre
+        if (event.type == sf::Event::Closed)
+            window.close();
     }
+
+    ball.move(ellapsedTime);
+    ball.manageCollisionWith(window);
+    ball.manageCollisionWith(player);
+    for (int i = 0; i < bricks.size(); i++)
+    {
+        if (bricks[i]->isAlive())
+        {
+            bricks[i]->draw(window);
+            ball.manageCollisionWith(bricks[i]);
+        }
+        else
+        {
+            bricks[i]->destroyAndDelete(bricks);
+        }
+    }
+
+    // Vérifier si la balle est hors de l'écran
+    if (ball.getPosition().x < 0 || ball.getPosition().x > window.getSize().x ||
+        ball.getPosition().y < 0 || ball.getPosition().y > window.getSize().y)
+    {
+        window.close();
+    }
+
+    window.clear();
+
+    // Dessin des briques
+    for (int i = 0; i < bricks.size(); i++) {
+        bricks[i]->draw(window);
+    }
+
+    double mappedValue = mapValue(ball.getPosition().x, 0, window.getSize().x, 0, 255);
+    double mappedValue2 = mapValue(ball.getPosition().y, 0, window.getSize().y, 0, 255);
+    double mappedValue3 = (mappedValue + mappedValue2) / 2.0;
+    rdr2.setFillColor(sf::Color(mappedValue, 255 - mappedValue2, mappedValue3));
+
+    rdr2.setPosition(0, 0);
+    window.draw(rdr2);
+    player.draw(window);
+    ball.draw(window);
+    for (auto& brick : bricks) {
+        brick->draw(window);
+    }
+    window.display();
+}
 
     // Nettoyage des briques
     for (int i = 0; i < bricks.size(); i++) {
