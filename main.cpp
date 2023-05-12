@@ -107,12 +107,12 @@ int main(int argc, char** argv)
     window.display();
 }
 
-
     // Nettoyage des briques
     for (int i = 0; i < bricks.size(); i++) {
         delete bricks[i];
     }
     bricks.clear();
+
 
     return 0;
 }
