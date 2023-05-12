@@ -1,5 +1,6 @@
 #include "Ball.h"
 #include <cmath>
+#include <iostream>
 
 const double PI = std::acos(-1); // alternative à M_PI
 
@@ -186,7 +187,10 @@ void Ball::manageCollisionWith(Brick* brick)
 		{
 			// La balle touche la brique en haut
 			direction.y = -std::abs(direction.y);
+
+
 		}
 	}
+
 }
 

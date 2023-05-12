@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <deque>
+#include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Audio/Sound.hpp>
 
 class Brick
 {
@@ -13,6 +15,8 @@ private:
 	sf::Clock clock; // Horloge pour mesurer le temps écoulé depuis la dernière collision
 	void setColor(); // Changer la couleur de la brique en fonction de sa santé
 public:
+	sf::SoundBuffer collisionSoundBuffer;
+	sf::Sound collisionSound;
 	Brick(int x, int y, int width, int height, int health); // Constructeur
 	~Brick(); // Destructeur
 	void draw(sf::RenderWindow& window); // Dessiner la brique sur la fenêtre

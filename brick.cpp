@@ -1,4 +1,5 @@
 #include "Brick.h"
+#include <iostream>
 
 Brick::Brick(int x, int y, int width, int height, int health)
 {
@@ -11,6 +12,15 @@ Brick::Brick(int x, int y, int width, int height, int health)
 	this->shape.setOutlineColor(sf::Color::White); // Blanc
 	this->shape.setOutlineThickness(1); // Largeur de 1 pixel pour le contour
 	this->lastCollisionTime = 0; // Initialisation du temps de la dernière collision à zéro
+	// Charger le fichier audio de collision
+	
+	//if (!collisionSoundBuffer.loadFromFile("pan.wav"))
+	if (!collisionSoundBuffer.loadFromFile("pet.wav"))
+	{
+		// Échec du chargement
+		std::cout << "Erreur : impossible de charger le fichier audio de collision" << std::endl;
+	}
+	collisionSound.setBuffer(collisionSoundBuffer);
 }
 
 Brick::~Brick()
@@ -52,6 +62,8 @@ void Brick::hit()
 			health--;
 			setColor();
 			lastCollisionTime = clock.getElapsedTime().asSeconds();
+			// Jouer le son de collision
+			collisionSound.play();
 		}
 	}
 }

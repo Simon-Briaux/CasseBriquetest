@@ -3,6 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include "Player.h"
 #include "brick.h"
+#include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Audio/Sound.hpp>
 
 class Ball
 {
@@ -16,12 +18,15 @@ private:
 	int lives;
 	static bool isRandInitialized;
 	double randomizeAngle();
+	Ball();
 	void setAngle(double angle);
 public:
 	Ball(int x, int y, int radius, float speed);
 	~Ball();
 	void move(float ellapsedTime);
 	void draw(sf::RenderWindow& window);
+	sf::SoundBuffer collisionSoundBuffer;
+	sf::Sound collisionSound;
 	float getSpeed();
 	void setSpeed(float newSpeed);
 	void setPosition(sf::Vector2f newPosition);
