@@ -32,6 +32,7 @@ Ball::Ball(int x, int y, int radius, float speed)
 	position.y = y;
 	oldPosition = position;
 	shape.setFillColor(sf::Color(sf::Color::White));
+	shape.setPosition(position);
 	this->radius = radius;
 	shape.setRadius(radius);
 	this->speed = speed;

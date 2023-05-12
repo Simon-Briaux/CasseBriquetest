@@ -30,7 +30,7 @@ int main(int argc, char** argv)
 
     Ball ball(400, 200, 10, 400);
     Player player(550, 100, 10);
-    Brick brick(25, 50, 50, 20, 2);
+    //Brick brick(25, 50, 50, 20, 2);
     sf::RenderWindow window(sf::VideoMode(908, 600), "Casse Brique");
 
     sf::RectangleShape rdr2;
