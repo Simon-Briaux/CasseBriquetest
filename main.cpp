@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "Ball.h"
 #include "Player.h"
 #include "Brick.h"
@@ -39,34 +40,43 @@ int main(int argc, char** argv)
     sf::Clock clock;
     float ellapsedTime = 0;
 
-    // on fait tourner le programme jusqu'à ce que la fenêtre soit fermée
-   while (window.isOpen())
-{
-    ellapsedTime = clock.restart().asSeconds();
-    // on inspecte tous les évènements de la fenêtre qui ont été émis depuis la précédente itération
-    sf::Event event;
-    while (window.pollEvent(event))
+    // Chargement et lecture de la musique
+    sf::Music music;
+    if (!music.openFromFile("HL.ogg"))
     {
-        // évènement "fermeture demandée" : on ferme la fenêtre
-        if (event.type == sf::Event::Closed)
-            window.close();
+        std::cerr << "Erreur lors du chargement de la musique" << std::endl;
     }
+    music.setLoop(true);
+    music.play();
 
-    ball.move(ellapsedTime);
-    ball.manageCollisionWith(window);
-    ball.manageCollisionWith(player);
-    for (int i = 0; i < bricks.size(); i++)
+    // on fait tourner le programme jusqu'à ce que la fenêtre soit fermée
+    while (window.isOpen())
     {
-        if (bricks[i]->isAlive())
+        ellapsedTime = clock.restart().asSeconds();
+        // on inspecte tous les évènements de la fenêtre qui ont été émis depuis la précédente itération
+        sf::Event event;
+        while (window.pollEvent(event))
         {
-            bricks[i]->draw(window);
-            ball.manageCollisionWith(bricks[i]);
+            // évènement "fermeture demandée" : on ferme la fenêtre
+            if (event.type == sf::Event::Closed)
+                window.close();
         }
-        else
+
+        ball.move(ellapsedTime);
+        ball.manageCollisionWith(window);
+        ball.manageCollisionWith(player);
+        for (int i = 0; i < bricks.size(); i++)
         {
-            bricks[i]->destroyAndDelete(bricks);
+            if (bricks[i]->isAlive())
+            {
+                bricks[i]->draw(window);
+                ball.manageCollisionWith(bricks[i]);
+            }
+            else
+            {
+                bricks[i]->destroyAndDelete(bricks);
+            }
         }
-    }
 
     // Vérifier si la balle est hors de l'écran
     if (ball.getPosition().x < 0 || ball.getPosition().x > window.getSize().x ||
@@ -96,6 +106,7 @@ int main(int argc, char** argv)
     }
     window.display();
 }
+
 
     // Nettoyage des briques
     for (int i = 0; i < bricks.size(); i++) {
